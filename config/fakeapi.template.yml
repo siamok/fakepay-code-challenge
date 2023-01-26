@@ -1,0 +1,4 @@
+# rename to fakeapi.yml
+shared:
+  token: TOKEN
+  url: https://www.fakepay.io/purchase
