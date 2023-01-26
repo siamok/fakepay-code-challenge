@@ -7,8 +7,8 @@ module FakePay
     attr_reader :url, :token
 
     def initialize
-      @url = Rails.configuration.x.fakepay[:url]
-      @token = Rails.configuration.x.fakepay[:token]
+      @url = URI.parse(Rails.application.config_for(:fakeapi)[:url])
+      @token = Rails.application.config_for(:fakeapi)[:token]
     end
 
     def purchase(credit_card_information, plan_price)
@@ -49,20 +49,20 @@ module FakePay
         expiration_month: credit_card_information[:expiration_month],
         expiration_year: credit_card_information[:expiration_year],
         zip_code: credit_card_information[:billing_zip_code]
-      }
+      }.to_json
     end
 
     def payment_token_body(payment_token, plan_price)
       {
         amount: plan_price,
         token: payment_token
-      }
+      }.to_json
     end
 
     def headers
       {
-        'Content-Type': 'application/json',
-        'Authorization': "Token token=#{token}"
+        'Content-Type' => 'application/json',
+        'Authorization' => "Token token=#{token}"
       }
     end
   end
