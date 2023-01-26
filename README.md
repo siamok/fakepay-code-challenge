@@ -19,12 +19,27 @@ For simplicity's sake, assume that the frontend will pre-validate customer data 
 # Setup
 ```
 bundle install
-rails db:setup
+rake db:create
+rake db:migrate
+rake db:seed
 cp config/fakeapi.template.yml config/fakeapi.yml
 # replace TOKEN with your API token
-```
-
-Verification
-```
 rspec
 ```
+
+### Cron
+
+To schedule cron task
+
+`bundle exec whenever --update-crontab --set environment='development'`
+
+To clear crontab
+
+`bundle exec whenever --clear-crontab`
+
+(cron does not work in my WSL env :S)
+
+
+# Example
+
+Check [Example](doc/example.md)

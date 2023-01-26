@@ -13,7 +13,7 @@ class TransactionPreservation
     subscription = Subscription.new(customer_id: customer_info.id,
                                     subscription_plan_id: subscription_plan.id,
                                     payment_token: payment_token,
-                                    last_purchase_date: Time.now)
+                                    last_purchase_date: Time.zone.now)
     subscription.save
     subscription
   end

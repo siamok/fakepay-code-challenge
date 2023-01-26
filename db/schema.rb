@@ -30,7 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_25_204755) do
     t.integer "customer_id"
     t.integer "subscription_plan_id"
     t.string "payment_token"
-    t.date "last_purchase_date"
+    t.datetime "last_purchase_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_subscriptions_on_customer_id"
