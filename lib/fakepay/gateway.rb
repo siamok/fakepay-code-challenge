@@ -7,13 +7,15 @@ module FakePay
     attr_reader :url, :token
 
     def initialize
-      @url = URI.parse(Rails.application.config_for(:fakeapi)[:url])
+      @url = Rails.application.config_for(:fakeapi)[:url]
       @token = Rails.application.config_for(:fakeapi)[:token]
     end
 
     def purchase(credit_card_information, plan_price)
+      raise PurchaseError, 'Access denied' if url.nil? || token.nil?
+
       response = HTTParty.post(
-        url,
+        URI.parse(url),
         body: credit_card_body(credit_card_information, plan_price),
         headers: headers
       )
@@ -22,8 +24,10 @@ module FakePay
     end
 
     def purchase_with_token(payment_token, plan_price)
+      raise PurchaseError, 'Access denied' if url.nil? || token.nil?
+
       response = HTTParty.post(
-        url,
+        URI.parse(url),
         body: payment_token_body(payment_token, plan_price),
         headers: headers
       )
