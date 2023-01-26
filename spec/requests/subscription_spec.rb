@@ -56,13 +56,36 @@ RSpec.describe 'Subscriptions', type: :request do
     describe 'invalid request' do
       context 'when expired card provided' do
         let(:expiration_year) { Time.now.year - 1 }
-        let(:httparty_response) { { token: nil, success: false, error_code: 1000004 } }
+        let(:httparty_response) { { token: nil, success: false, error_code: 1_000_004 } }
 
         it 'responds with failure' do
           post '/subscription', params: params, headers: json_headers
           expect(response).to have_http_status(422)
           expect(response_json.fetch('status')).to eq('failure')
           expect(response_json.fetch('data').fetch('error')).to eq('Expired card')
+        end
+      end
+    end
+
+    describe 'customer_id provided' do
+      context 'when all params provided' do
+        let(:customer) do
+          Customer.create!(
+            name: 'test',
+            zip_code: '12345',
+            address: 'test 1, test'
+          )
+        end
+
+        let(:customer_shipping) do
+          { name: customer_name, address: customer_address, zip_code: customer_zip_code, customer_id: customer.id }
+        end
+
+        it 'reponds with success' do
+          post '/subscription', params: params, headers: json_headers
+
+          expect(response).to have_http_status(:ok)
+          expect(response_json.fetch('status')).to eq('success')
         end
       end
     end

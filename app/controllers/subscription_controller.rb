@@ -16,7 +16,7 @@ class SubscriptionController < ApplicationController
   private
 
   def shipping_params
-    params.require(:shipping).permit(:name, :address, :zip_code)
+    params.require(:shipping).permit(:name, :address, :zip_code, :customer_id)
   end
 
   def billing_params

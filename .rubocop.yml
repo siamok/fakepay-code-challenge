@@ -4,3 +4,5 @@ Style/Documentation:
 
 AllCops:
   NewCops: disable
+  Exclude:
+    - 'db/schema.rb'
