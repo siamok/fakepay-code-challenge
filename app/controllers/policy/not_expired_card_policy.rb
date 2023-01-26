@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# CreditCardPolicy
 class NotExpiredCardPolicy
   attr_reader :credit_card
 

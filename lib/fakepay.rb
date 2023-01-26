@@ -4,3 +4,4 @@
 module FakePay; end
 
 require 'fakepay/gateway'
+require 'fakepay/error_codes'

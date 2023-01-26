@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'subscription_admission'
-
 class SubscriptionController < ApplicationController
   def create
     subscription = SubscriptionAdmission.new(
@@ -11,9 +9,8 @@ class SubscriptionController < ApplicationController
     ).purchase
 
     render json: { status: 'success', data: { subscription: subscription.safe_representation } }, status: :ok
-  rescue CreditCardInformation::CardValidation => e
-    render json: { status: 'failure', data: { error: e.message } }, status: :unprocessable_entity
-  rescue FakePay::GatewayError => e
+  rescue ActiveRecord::RecordInvalid,
+         FakePay::PurchaseError => e
     render json: { status: 'failure', data: { error: e.message } }, status: :unprocessable_entity
   end
 

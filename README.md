@@ -15,3 +15,16 @@ The data that is stored upon a successful signup should be sufficient to charge 
 Because of PCI requirements, we cannot store the customer's credit card number, anywhere. We will only have access to it at their initial signup.
 
 For simplicity's sake, assume that the frontend will pre-validate customer data before a request is sent to your API endpoint
+
+# Setup
+```
+bundle install
+rails db:setup
+cp config/fakeapi.template.yml config/fakeapi.yml
+# replace TOKEN with your API token
+```
+
+Verification
+```
+rspec
+```
