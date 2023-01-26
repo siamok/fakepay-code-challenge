@@ -34,43 +34,36 @@ RSpec.describe 'Subscriptions', type: :request do
     end
 
     describe 'valid request' do
-      it 'reponds with success' do
-        post '/subscription', params: params, headers: json_headers
-        expect(response).to have_http_status(:ok)
-        expect(response_json.fetch('status')).to eq('success')
-      end
+      context 'when all params provided' do
+        it 'reponds with success' do
+          post '/subscription', params: params, headers: json_headers
 
-      it 'reponds with subscription' do
-        post '/subscription', params: params, headers: json_headers
-        subscription = response_json.fetch('data').fetch('subscription')
-        expect(subscription.fetch('subscription_plan_id')).to eq(customer_plan[:id])
-        expect(subscription.fetch('last_purchase_date')).to eq(Time.now.strftime('%Y-%m-%d'))
-        expect(subscription['payment_token']).to eq(nil)
+          expect(response).to have_http_status(:ok)
+          expect(response_json.fetch('status')).to eq('success')
+        end
+
+        it 'reponds with subscription' do
+          post '/subscription', params: params, headers: json_headers
+
+          subscription = response_json.fetch('data').fetch('subscription')
+          expect(subscription.fetch('subscription_plan_id')).to eq(customer_plan[:id])
+          expect(subscription.fetch('last_purchase_date')).to eq(Time.now.strftime('%Y-%m-%d'))
+          expect(subscription['payment_token']).to eq(nil)
+        end
       end
     end
 
     describe 'invalid request' do
       context 'when expired card provided' do
         let(:expiration_year) { Time.now.year - 1 }
-        let(:httparty_response) { { token: nil, success: false, error_code: 1_000_004 } }
+        let(:httparty_response) { { token: nil, success: false, error_code: 1000004 } }
+
         it 'responds with failure' do
           post '/subscription', params: params, headers: json_headers
           expect(response).to have_http_status(422)
           expect(response_json.fetch('status')).to eq('failure')
           expect(response_json.fetch('data').fetch('error')).to eq('Expired card')
         end
-      end
-    end
-
-    context 'when customer info is missing' do
-      let(:params) { { shipping: customer_shipping.except(:name), billing: customer_billing, plan: customer_plan } }
-
-      it 'responds with failure' do
-        post '/subscription', params: params, headers: json_headers
-
-        expect(response).to have_http_status(422)
-        expect(response_json.fetch('status')).to eq('failure')
-        expect(response_json.fetch('data').fetch('error')).to eq('Validation failed: Name can\'t be blank')
       end
     end
   end

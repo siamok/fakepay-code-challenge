@@ -9,8 +9,7 @@ class SubscriptionController < ApplicationController
     ).purchase
 
     render json: { status: 'success', data: { subscription: subscription.safe_representation } }, status: :ok
-  rescue ActiveRecord::RecordInvalid,
-         FakePay::PurchaseError => e
+  rescue FakePay::PurchaseError => e
     render json: { status: 'failure', data: { error: e.message } }, status: :unprocessable_entity
   end
 

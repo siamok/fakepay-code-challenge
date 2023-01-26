@@ -12,12 +12,8 @@ class SubscriptionAdmission
   end
 
   def purchase
-    credit_card_information = CreditCardInformation.new(billing_params)
-    # credit_card_information.validate #FakePay validates
-
     customer = Customer.create!(shipping_params)
-
-    payment_token = FakePay::Gateway.new.purchase(credit_card_information, subscription_plan.price)
+    payment_token = FakePay::Gateway.new.purchase(billing_params, subscription_plan.price)
 
     TransactionPreservation.new(customer, subscription_plan, payment_token).commit_transaction
   end

@@ -44,11 +44,11 @@ module FakePay
     def credit_card_body(credit_card_information, plan_price)
       {
         amount: plan_price,
-        card_number: credit_card_information.card_number,
-        cvv: credit_card_information.cvv,
-        expiration_month: credit_card_information.expiration_month,
-        expiration_year: credit_card_information.expiration_year,
-        zip_code: credit_card_information.billing_zip_code
+        card_number: credit_card_information[:card_number],
+        cvv: credit_card_information[:cvv],
+        expiration_month: credit_card_information[:expiration_month],
+        expiration_year: credit_card_information[:expiration_year],
+        zip_code: credit_card_information[:billing_zip_code]
       }
     end
 
