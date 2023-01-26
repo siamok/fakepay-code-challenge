@@ -47,7 +47,7 @@ RSpec.describe 'Subscriptions', type: :request do
 
           subscription = response_json.fetch('data').fetch('subscription')
           expect(subscription.fetch('subscription_plan_id')).to eq(customer_plan[:id])
-          expect(subscription.fetch('last_purchase_date')).to eq(Time.now.strftime('%Y-%m-%d'))
+          expect(subscription.fetch('last_purchase_date').split('T')[0]).to eq(Time.now.strftime('%Y-%m-%d'))
           expect(subscription['payment_token']).to eq(nil)
         end
       end

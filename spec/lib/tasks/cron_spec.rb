@@ -39,7 +39,7 @@ describe 'renew_subscription.rake' do
       it 'renews that subscription' do
         Rake::Task[TASK_NAME].invoke
 
-        expect(subscription.reload.last_purchase_date.to_s).to eq(Time.zone.now.strftime('%Y-%m-%d'))
+        expect(subscription.reload.last_purchase_date.to_i).to eq(Time.zone.now.to_i)
       end
     end
   end
